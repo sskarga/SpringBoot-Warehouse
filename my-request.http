@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8080/api/v1/products/2
+DELETE http://localhost:8080/api/v1/products/12
 Content-Type: application/json
 
 ###
@@ -20,9 +20,8 @@ POST http://localhost:8080/api/v1/products
 Content-Type: application/json
 
 {
-  "id": null,
-  "name": "Product-new",
-  "article": "article-new",
+  "name": "Pr",
+  "article": "arrvtert erterte ryeyh ytrhgtrhtrh trhrthtr",
   "units": "until",
   "coast": 88
 }
@@ -34,7 +33,17 @@ Accept: application/json
 
 ###
 
-GET http://localhost:8080/api/v1/products/2
+GET http://localhost:8080/api/v1/products?page=0&size=3&limit=3
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/v1/products/search?name=product
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/v1/products/1
 Accept: application/json
 
 ###

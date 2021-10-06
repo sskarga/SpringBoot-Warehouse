@@ -1,15 +1,22 @@
 package com.whouse.simple.controller;
 
+import com.whouse.simple.dto.CreateProductDTO;
 import com.whouse.simple.dto.ProductDTO;
 import com.whouse.simple.entity.Product;
+import com.whouse.simple.error.NotFoundException;
 import com.whouse.simple.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,8 +33,19 @@ public class ProductController {
 
     @GetMapping
     @ResponseBody
-    List<ProductDTO> getProduct() {
-        return productService.getProductList()
+    Page<Product> getProduct(Pageable pageable) {
+        return productService.getProductList(pageable);
+//        return productService.getProductList(pageable)
+//                .stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+
+    }
+
+    @GetMapping(value = "/search")
+    @ResponseBody
+    List<ProductDTO> getProductByName(@RequestParam(name="name") String searchByName) {
+        return productService.getProductByName(searchByName)
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -35,35 +53,33 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}")
-    public ProductDTO findById(@PathVariable("id") Long id) {
-        return convertToDto(productService.getProductById(id));
+    public ProductDTO findById(@PathVariable("id") @Min(0) Long id) throws NotFoundException {
+        return convertToDto(getProduct(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody ProductDTO productDTO) {
+    public void create(@Valid @RequestBody CreateProductDTO productDTO) {
         productService.creatProduct(convertToEntity(productDTO));
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable( "id" ) Long id, @RequestBody ProductDTO productDTO) {
-        if (productService.getProductById(id) != null) {
-            productService.updateProduct(convertToEntity(productDTO));
-        }
+    public void update(@PathVariable( "id" ) @Min(0) Long id, @RequestBody @Valid ProductDTO productDTO) throws NotFoundException {
+        getProduct(id);
+        productService.updateProduct(convertToEntity(productDTO));
     }
 
     @DeleteMapping(value = "/{id}")
-    //@ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("id") Long id) {
-        Product product = productService.getProductById(id);
-        if (product != null) {
-            productService.deleteProduct(product);
-            new ResponseEntity<String>(HttpStatus.OK);
-        }
-        else {
-            new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable("id") @Min(0) Long id) throws NotFoundException {
+        productService.deleteProduct(getProduct(id));
+    }
+
+    private Product getProduct(@PathVariable("id") @Min(0) Long id) throws NotFoundException {
+        Optional<Product> product = productService.getProductById(id);
+        if (product.isEmpty()) throw new NotFoundException("Not find by id" + id.toString());
+        return product.get();
     }
 
     private ProductDTO convertToDto(Product product) {
@@ -71,6 +87,10 @@ public class ProductController {
     }
 
     private Product convertToEntity(ProductDTO productDTO) {
+        return modelMapper.map(productDTO, Product.class);
+    }
+
+    private Product convertToEntity(CreateProductDTO productDTO) {
         return modelMapper.map(productDTO, Product.class);
     }
 }

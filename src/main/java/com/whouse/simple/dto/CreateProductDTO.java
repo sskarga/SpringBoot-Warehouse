@@ -3,15 +3,11 @@ package com.whouse.simple.dto;
 import lombok.Data;
 
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class ProductDTO {
-    @NotBlank
-    @Min(0)
-    private long id;
+public class CreateProductDTO {
 
     @Size(min = 4, max = 200)
     private String name;

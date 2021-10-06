@@ -13,6 +13,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Optional;
+
 @SpringBootApplication
 public class SimpleApplication {
 
@@ -29,6 +31,10 @@ public class SimpleApplication {
 			repository.save(new Product("Product-2", "article-p2", "until", 8.12 ));
 			repository.save(new Product("Product-3", "article-p3", "until", 0.2 ));
 			repository.save(new Product("Product-4", "article-p4", "until", 44.0 ));
+			repository.save(new Product("Product-5", "article-p5", "until", 10.5 ));
+			repository.save(new Product("Product-6", "article-p6", "until", 8.12 ));
+			repository.save(new Product("Product-7", "article-p7", "until", 0.2 ));
+			repository.save(new Product("Product-8", "article-p8", "until", 44.0 ));
 
 			Product tProduct = new Product("T Product-1", "article-tp1", "until", 13.5 );
 			repository.save(tProduct);
@@ -48,13 +54,13 @@ public class SimpleApplication {
 
 			log.info("Find by id = 2");
 			log.info("-----------------------------");
-			Product p = repository.findById(2L);
+			Optional<Product> p = repository.findById(2L);
 			log.info(p.toString());
 			log.info("");
 
 			log.info("Find by name = duct");
 			log.info("-----------------------------");
-			repository.findByNameContains("duct").forEach(
+			repository.findByNameContainsIgnoreCase("duct").forEach(
 					item -> {
 						log.info(item.toString());
 					}

@@ -4,14 +4,17 @@ package com.whouse.simple.service;
 import com.whouse.simple.entity.Product;
 import com.whouse.simple.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImp implements ProductService {
 
-    private ProductRepository repository;
+    private final ProductRepository repository;
 
     @Autowired
     public ProductServiceImp(ProductRepository repository) {
@@ -19,13 +22,18 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<Product> getProductList() {
-        return repository.findAll();
+    public Page getProductList(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override
-    public Product getProductById(Long id) {
-        return repository.findById(id).orElse(new Product());
+    public Optional<Product> getProductById(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public List<Product> getProductByName(String name) {
+        return repository.findByNameContainsIgnoreCase(name);
     }
 
     @Override
