@@ -7,8 +7,6 @@ import com.whouse.simple.error.NotFoundException;
 import com.whouse.simple.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,13 +31,11 @@ public class ProductController {
 
     @GetMapping
     @ResponseBody
-    Page<Product> getProduct(Pageable pageable) {
-        return productService.getProductList(pageable);
-//        return productService.getProductList(pageable)
-//                .stream()
-//                .map(this::convertToDto)
-//                .collect(Collectors.toList());
-
+    List<ProductDTO> getProduct() {
+        return productService.getProductList()
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = "/search")
