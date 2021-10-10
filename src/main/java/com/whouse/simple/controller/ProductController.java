@@ -72,7 +72,7 @@ public class ProductController {
         productService.deleteProduct(getProduct(id));
     }
 
-    private Product getProduct(@PathVariable("id") @Min(0) Long id) throws NotFoundException {
+    private Product getProduct(Long id) throws NotFoundException {
         Optional<Product> product = productService.getProductById(id);
         if (product.isEmpty()) throw new NotFoundException("Not find by id" + id.toString());
         return product.get();

@@ -39,8 +39,12 @@ public class SimpleApplication {
 			Product tProduct = new Product("T Product-1", "article-tp1", "until", 13.5 );
 			repository.save(tProduct);
 
+			pr.save(new Person("T.Person-1"));
+			pr.save(new Person("T.Person-2"));
+			pr.save(new Person("T.Person-3"));
 			Person tPerson = new Person("T.Person");
 			pr.save(tPerson);
+
 
 			Order tOrder = new Order(10, 245.0, tProduct, tPerson);
 			or.save(tOrder);

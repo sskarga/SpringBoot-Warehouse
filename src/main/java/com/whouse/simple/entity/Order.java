@@ -3,6 +3,7 @@ package com.whouse.simple.entity;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.Date;
 
 @Entity
@@ -10,10 +11,13 @@ import java.util.Date;
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
+    @Min(0)
     private int count;
+
+    @Min(0)
     private double coast;
 
     @CreatedDate
