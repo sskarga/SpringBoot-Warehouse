@@ -1,6 +1,6 @@
 package com.whouse.simple.controller;
 
-import com.whouse.simple.dto.CreateProductDTO;
+import com.whouse.simple.dto.RequestProductDTO;
 import com.whouse.simple.dto.ProductDTO;
 import com.whouse.simple.entity.Product;
 import com.whouse.simple.error.NotFoundException;
@@ -55,7 +55,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid @RequestBody CreateProductDTO productDTO) {
+    public void create(@Valid @RequestBody RequestProductDTO productDTO) {
         productService.creatProduct(convertToEntity(productDTO));
     }
 
@@ -86,7 +86,7 @@ public class ProductController {
         return modelMapper.map(productDTO, Product.class);
     }
 
-    private Product convertToEntity(CreateProductDTO productDTO) {
+    private Product convertToEntity(RequestProductDTO productDTO) {
         return modelMapper.map(productDTO, Product.class);
     }
 }

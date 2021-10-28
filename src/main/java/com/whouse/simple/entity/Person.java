@@ -26,7 +26,7 @@ public class Person {
     @NonNull
     private String name;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Order> orders;
 

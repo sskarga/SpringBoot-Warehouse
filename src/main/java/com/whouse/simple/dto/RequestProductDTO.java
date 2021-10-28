@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class CreateProductDTO {
+public class RequestProductDTO {
 
     @Size(min = 4, max = 200)
     private String name;

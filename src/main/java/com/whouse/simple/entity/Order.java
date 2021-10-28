@@ -1,5 +1,6 @@
 package com.whouse.simple.entity;
 
+import com.fasterxml.jackson.annotation.JsonMerge;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -28,7 +29,8 @@ public class Order {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
 

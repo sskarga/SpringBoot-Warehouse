@@ -28,7 +28,7 @@ public class Product {
     private String units;
     private double coast;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
     public Product() {
