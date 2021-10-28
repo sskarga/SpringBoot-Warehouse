@@ -3,7 +3,7 @@ REST APIs implemented using Spring Boot Maven Project
 
 
 ## REST APIs Endpoints
-```json lines
+```Yaml
 openapi: "3.0.3"
 info:
   title: "simple API"
